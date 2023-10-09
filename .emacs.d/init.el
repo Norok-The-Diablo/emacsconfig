@@ -584,6 +584,11 @@
 
 (use-package neotree)
 
+; Treesitter
+
+(use-package tree-sitter :ensure t :diminish :config (global-tree-sitter-mode) :hook (tree-sitter-mode . tree-sitter-hl-mode))
+(use-package tree-sitter-langs :ensure t :after tree-sitter)
+
 (global-set-key [f8] 'neotree-toggle)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
