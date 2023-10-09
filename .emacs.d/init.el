@@ -4,12 +4,6 @@
 ;; Application Options
 ;; ###################
 
-;; Disable GUI elements. Why?
-;; .. they take up screen-space and are unnecessary, favor a minimal interface.
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-
 ;; Disable startup message. Why?
 ;; .. less noise is better.
 (defun display-startup-echo-area-message () (message ""))
@@ -68,7 +62,7 @@
 
 ;; No startup screen. Why?
 ;; .. no need to distract us with unnecessary info.
-(setq inhibit-startup-screen t)
+;; (setq inhibit-startup-screen t)
 
 ;; Don't show buffer list on startup. Why?
 ;; .. buffer switching gets in the way, you can manually switch between them.
@@ -222,9 +216,9 @@
 
 ;; Nice theme from VIM Why?
 ;; .. personal preference.
-(use-package inkpot-theme
+(use-package catppuccin-theme
   :demand t
-  :config (load-theme 'inkpot t))
+  :config (load-theme 'catppuccin t))
 
 
 ;; Highlight terms in code-comments such as TODO, FIXME, URL's & email. Why?
@@ -525,42 +519,82 @@
       (mouse-yank-secondary click)
       (delete-overlay mouse-secondary-overlay))))
 
-;; VIM increment/decrement keys.
-(define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
-
-(define-key evil-visual-state-map (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
-(define-key evil-visual-state-map (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental)
-
-;; Auto complete using words from the buffer.
-(define-key evil-insert-state-map (kbd "C-n") 'company-dabbrev)
-;; Comprehensive auto-complete.
-(define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common)
-
-
-;; ----------------
-;; Evil Leader Keys
-;; ================
-
-;; Example leader keys for useful functionality exposed by packages.
-(with-eval-after-load 'evil
-  (evil-set-leader '(normal) (kbd "<SPC>"))
-
-  ;; Interactive file name search.
   (evil-define-key 'normal 'global (kbd "<leader>k") 'find-file-in-project)
   ;; Interactive file content search (git).
   (evil-define-key 'normal 'global (kbd "<leader>f") 'counsel-git-grep)
   ;; Interactive current-file search.
   (evil-define-key 'normal 'global (kbd "<leader>s") 'swiper)
   ;; Interactive open-buffer switch.
-  (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer))
+  (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer)
 
-;; ----------------------------------------------------------------------------
-;; Custom Variables
-;; ################
+;; ---------------------------------------------------------------------------------------------------------------------
+;; My Additions
 
-;; Store custom variables in an external file. Why?
-;; .. it means this file can be kept in version control without noise from custom variables.
+;; Plugins
 
-(setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file 'noerror)
+;; Dashboard
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+(dashboard-setup-startup-hook)
+
+;; Icons
+
+(use-package nerd-icons)
+
+;; Page Break Lines
+
+(use-package page-break-lines)
+
+;; Projectile
+
+(use-package projectile)
+
+;; LSP
+
+(use-package corfu
+:init
+  (global-corfu-mode))
+(use-package emacs
+  :init
+  (setq completion-cycle-threshold 3)
+  (setq tab-always-indent 'complete))
+
+(use-package lsp-mode)
+
+(use-package lsp-ui)
+
+(use-package dap-mode)
+
+;; Which Key
+
+(use-package which-key)
+
+;; Undo Tree
+
+(use-package vundo)
+
+;; Quickrun
+
+(use-package quickrun)
+
+;; Neotree
+
+(use-package neotree)
+
+(global-set-key [f8] 'neotree-toggle)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(neotree vundo quickrun emacs-which-key dap-mode lsp-ui lsp-mode corfu projectile page-break-lines nerd-icons dashboard which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company catppuccin-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
